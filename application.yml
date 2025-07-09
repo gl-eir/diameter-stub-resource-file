@@ -1,0 +1,86 @@
+server:
+  port: 9080
+  servlet:
+    context-path: /eagle-eir-stub
+
+eagle:
+  diameter:
+    server:
+      connectionType: SCTP                       # //sctp or tcp
+      destinationIp: 10.100.2.246               # // no use but dont remove it
+        #destinationSecondaryIp: 10.100.1.173
+      clientId: CLIENT_1                         # // ignore
+      destinationRelam: epc.mnc099.mcc456.3gppnetwork.org      # // ignore
+      originIp: 10.100.2.246                        # // self ip primary
+        #originSecondaryIp: 10.100.6.173              # // self ip secondary
+      originRelam: epc.mnc099.mcc456.3gppnetwork.org           # // ignore
+      applicationId: APPLICATION_CLIENT_1        # // ignore
+      product: PRODUCT_CLIENT_1                 #// ignore
+      destinationPort: 17084                     #// listen port of server
+      originPort: 17085                         #// ignore
+      vendorId: 1                               #// ignore
+      authApp: 16777552                                #// ignore
+      dwrTimeInSeconds: 10                      #// ignore
+      disconnectionWaitTimeInSecond: 0         #// Disconnect waiting timer  #keep 0 for load test
+      disconnectionDPRWaitTimeInSecond: 0      #// PDA waiting timer  #keep 0 for load test
+      stubIdloadWhiteTps: 1             #// exception list load. 200tps of whitelist
+      stubIdloadWhiteStart: 1            #// start series
+      stubIdloadWhiteTill: 8500000        #// end series . basically combination is telling the load count
+      stubIdloadGreyTps: 0             #// grey list tps
+      stubIdloadGreyStart: 1              #// GL start series
+      stubIdloadGreyTill: 2000000            #// GL end series
+      stubIdloadBlackTps: 0             #// BL tps
+      stubIdloadBlackStart: 1             #// BL start series
+      stubIdloadBlackTill: 8500000         #// BL end series
+      stubIdloadTacTps: 0             #// BL tps
+      stubIdloadTacStart: 1             #// BL start series
+      stubIdloadTacTill: 2000000         #// BL end series
+  identity-check:
+    udp-receiver-ip: 127.0.0.1             #     // ignore
+    udp-receiver-port: 7002                 #    // ignore
+  eir:
+    timer:
+      firstTw: 20               #// ignore
+      secondTw: 30              #// ignore
+      thirdTw: 40               #// ignore
+      firstTd: 20               #// ignore
+    thread-pool:
+      corePoolSize: 30
+      maximumPoolSize: 50
+      keepAliveTime: 5
+      queueSize: 1
+
+identity-check:
+  udp:
+    serverIp: 127.0.0.1
+    serverPort: 7001
+    expiryTime: 5
+
+alerts:
+  postUrl: http://127.0.0.1:9504/eir/alert
+  processId: Diameter Client
+  alerts-mapping:
+    CONNECTION_ESTABLISHED_WITH_SERVER:
+      alertId: alert1301
+      message: "Info: Connection Established with Server:<SERVER>"
+    CONNECTION_COMM_DONW:
+      alertId: alert1302
+      message: "Connection Disconnected with Server:<SERVER>"
+    GRACE_FULL_SHUTDOWN_WITH_DPR:
+      alertId: alert1303
+      message: "Grace full Shutdown Server:<SERVER>"
+    INVALID_CEA:
+      alertId: alert1304
+      message: "Invalid CEA Received from Server:<SERVER>"
+    UNKNOWN_COMMAND:
+      alertId: alert1305
+      message: "Unknown Command Received from Server:<SERVER> Command:<COMMAND_CODE>"
+    SESSION_MAP_SIZE_INCREASED:
+      alertId: alert1306
+      message: "Diameter Client Session Map Size Increased Size:<SESSION_SIZE>"
+    EXPIRY_QUEUE_SIZE_INCREASED:
+      alertId: alert1307
+      message: "Diameter Client Expiry Queue Size Increased Size:<QUEUE_SIZE>"
+    IDENTITY_CHECK_QUEUE_SIZE_INCREASED:
+      alertId: alert1308
+      message: "Diameter Client IdentityCheck Queue Size Increased Size:<QUEUE_SIZE>"
